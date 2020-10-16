@@ -1,0 +1,44 @@
+import Vue from 'vue';
+
+import VueRouter from 'vue-router';
+Vue.use(VueRouter);
+
+import Index from './pages/index';
+import Login from './pages/login';
+import Register from './pages/register';
+import ForgotPassword from './pages/forgot-password';
+
+const routes = [
+    { path: '/', component: Index },
+    { path: '/login', component: Login },
+    { path: '/register', component: Register },
+    { path: '/forgot-password', component: ForgotPassword }
+];
+
+const router = new VueRouter({
+    routes,
+    hashbang: false,
+    mode: "history"
+});
+
+router.beforeEach((to, from, next) => {
+    let middleware = to.matched[0].components.default.middleware;
+
+    if(middleware == 'guest') {
+        if(window.loggedIn) {
+            next("/");
+            return;
+        }
+    }
+
+    if(middleware == 'auth') {
+        if(!window.loggedIn) {
+            next("/login");
+            return;
+        }
+    }
+
+    next();
+  })
+
+export default router;

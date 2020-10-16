@@ -28,8 +28,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password', 'remember_token', 'email_verified_at', 'created_at', 'updated_at'
     ];
 
     /**
@@ -40,4 +39,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get the urls of the user
+     *
+     */
+    public function urls()
+    {
+        return $this->hasMany('App\Models\Url')->latest();
+    }
 }

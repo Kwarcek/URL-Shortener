@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UrlRequest;
-use App\Url;
+use App\Models\Url;
 use Illuminate\Http\Request;
+use App\Http\Requests\UrlRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 class UrlController extends Controller
@@ -16,8 +16,7 @@ class UrlController extends Controller
      */
     public function index()
     {
-        return Url::latest()
-                    ->get();
+        return auth()->user()->urls;
     }
 
     /**
@@ -28,8 +27,8 @@ class UrlController extends Controller
      */
     public function store(UrlRequest $request)
     {
-        Url::create($request->all());
-        return response('Created', Response::HTTP_CREATED);
+        $url = auth()->user()->urls()->create($request->all());
+        return response($url, Response::HTTP_CREATED);
     }
 
     /**
@@ -40,7 +39,8 @@ class UrlController extends Controller
      */
     public function show(Url $url)
     {
-        return $url;
+        $url->increment('visits');
+        return redirect($url->original_url);
     }
 
     /**
