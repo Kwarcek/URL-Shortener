@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Url extends Model
 {
     protected $fillable = [
-        'original_url', 'shorten_url', 'user_id'
+        'original_url', 'shorten_url', 'user_id', 'title'
     ];
 
     protected $appends = ['path'];

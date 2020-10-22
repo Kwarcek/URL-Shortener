@@ -1,16 +1,19 @@
 <?php
 
-Route::get('u/{url}', 'UrlController@show');
 Route::view('/', 'welcome');
-Route::view('{url}', 'welcome');
-
-Route::resource('/api/url', 'UrlController');
-
 Route::post('/register', 'Auth\RegisterController@register');
 Route::post('/login', 'Auth\LoginController@login');
 Route::post('/logout', 'Auth\LoginController@logout');
-Route::post('/password/send-email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
+Route::post('/password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
+Route::post('/password/reset', 'Auth\ResetPasswordController@reset');
 
-Auth::routes();
+Route::apiResource('/url', 'UrlController');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('u/{url}', 'UrlController@show');
+Route::any('{url}', function () {
+    return view('welcome');
+})->where('url', '.*');
+
+Route::post('password/reset/{token}', function () {
+    return '';
+})->name('password.reset');

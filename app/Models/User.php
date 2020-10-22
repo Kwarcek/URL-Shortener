@@ -40,9 +40,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+
     /**
-     * Get the urls of the user
+     * Get relationship urls
      *
+     * @return void
      */
     public function urls()
     {

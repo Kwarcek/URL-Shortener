@@ -2,15 +2,30 @@
   <div>
     <div class="text-center mt-5 mb-2 text-2xl">Url shortener</div>
     <div class="flex justify-center w-full">
-      <form @submit.prevent="submit" class="flex justify-center w-full">
-        <input
-          type="text"
-          v-model="original_url"
-          required
-          class="appearance-none pr-3 block w-1/3 bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none focus:border-gray-500"
-          minlength="4"
-          placeholder="Paste your url"
-        />
+      <form
+        @submit.prevent="submit"
+        class="md:w-full flex justify-center w-8/12 flex-wrap"
+      >
+        <div class="flex w-full justify-center">
+          <input
+            type="text"
+            v-model="form.title"
+            required
+            class="appearance-none pr-3 block w-1/2 bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none focus:border-gray-500"
+            minlength="3"
+            placeholder="Title"
+          />
+        </div>
+        <div class="flex w-full justify-center mt-3">
+          <input
+            type="text"
+            v-model="form.original_url"
+            required
+            class="appearance-none pr-3 block w-1/2 bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none focus:border-gray-500"
+            minlength="4"
+            placeholder="Paste your url"
+          />
+        </div>
         <button
           type="submit"
           class="md:w-32 ml-2 bg-teal-600 hover:bg-blue-dark text-white font-bold py-3 px-4 rounded-lg mt-3 hover:bg-teal-500 transition ease-in-out duration-300"
@@ -25,49 +40,79 @@
       >{{ errors }}</span
     >
     <section class="mt-5 flex justify-center">
-      <div class="border rounded-md p-4" v-if="items.length > 0">
-        <table>
-          <thead>
-            <tr>
-              <th>Original url</th>
-              <th>Shorten url</th>
-              <th>Visits</th>
-              <th>Created at</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in items" :key="item.id">
-              <td class="p-2 rounded border text-sm">
-                {{ item.original_url }}
-              </td>
-              <td class="p-2 rounded border text-sm">
-                <a :href="item.path" target="_blank">{{ item.shorten_url }}</a>
-              </td>
-              <td class="p-2 rounded border text-sm">{{ item.visits }}</td>
-              <td class="p-2 rounded border text-sm">{{ item.created_at }}</td>
-              <td class="p-2 rounded border text-sm">
-                <svg
-                  aria-hidden="true"
-                  focusable="false"
-                  data-prefix="fas"
-                  data-icon="times"
-                  class="svg-inline--fa fa-times fa-w-11 cursor-pointer"
-                  role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 352 512"
-                  style="max-width: 16px"
-                  @click="destroy(item)"
-                >
-                  <path
-                    fill="#feb2b2"
-                    d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"
-                  ></path>
-                </svg>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div v-if="items.data.length > 0">
+        <div class="border rounded-md p-4">
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Original url</th>
+                <th>Shorten url</th>
+                <th>Visits</th>
+                <th>Created at</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in items.data" :key="item.id">
+                <td class="p-2 rounded border text-sm">
+                  {{ item.title }}
+                </td>
+                <td class="p-2 rounded border text-sm">
+                  {{ item.original_url }}
+                </td>
+                <td class="p-2 rounded border text-sm">
+                  <span
+                    class="cursor-pointer"
+                    @click="copyToClipboard(item.path)"
+                  >
+                    {{ item.path }}
+                  </span>
+                  <a :href="item.path" target="_blank">
+                    <i class="fa fa-external-link pl-1" aria-hidden="true"></i>
+                  </a>
+                </td>
+                <td class="p-2 rounded border text-sm">{{ item.visits }}</td>
+                <td class="p-2 rounded border text-sm">
+                  {{ item.created_at }}
+                </td>
+                <td class="p-2 rounded border text-sm pl-5">
+                  <i
+                    class="fa fa-trash cursor-pointer text-red-600 text-lg"
+                    aria-hidden="true"
+                    @click="destroy(item)"
+                  ></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="flex w-full justify-between mt-5">
+            <a
+              href=""
+              class="border rounded shadow-xs w-10 flex justify-center"
+              :class="
+                items.current_page == 1
+                  ? 'bg-gray-200 text-gray-600 shadow-none cursor-default'
+                  : ''
+              "
+              @click.prevent="prev"
+            >
+              <<
+            </a>
+            <a
+              href=""
+              class="border rounded shadow-xs w-10 flex justify-center"
+              :class="
+                items.current_page == items.last_page
+                  ? 'bg-gray-200 text-gray-600 shadow-none cursor-default'
+                  : ''
+              "
+              @click.prevent="next"
+            >
+              >>
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   </div>
@@ -78,21 +123,24 @@ export default {
   middleware: "auth",
   data() {
     return {
-      original_url: "",
+      form: {
+        original_url: "",
+        title: "",
+      },
       errors: null,
-      items: [],
+      items: { data: [] },
     };
   },
   mounted() {
-    this.fetchData();
+    this.fetchData(this.$route.query.page);
   },
   methods: {
     submit() {
       if (this.original_url == "") return;
       axios
-        .post("/api/url", { original_url: this.original_url })
+        .post("/url", this.form)
         .then((res) => {
-          this.original_url = "";
+          (this.form.title = ""), (this.form.original_url = "");
           this.items.unshift(res.data);
           this.$notify({
             message: "Url added successfully 😃",
@@ -100,15 +148,13 @@ export default {
         })
         .catch((e) => {
           this.errors = e.response.data.errors.original_url[0];
-          //console.log(this.errors);
         });
     },
-    fetchData() {
+    fetchData(page = 1) {
       axios
-        .get("/api/url")
+        .get(`/url?page=${page}`)
         .then((res) => {
           this.items = res.data;
-          //console.log(res.data);
         })
         .catch((e) => {
           this.errors = e.response.data;
@@ -116,7 +162,7 @@ export default {
     },
     destroy(item) {
       if (confirm("Are you sure?")) {
-        axios.delete(`/api/url/${item.shorten_url}`).then((res) => {
+        axios.delete(`/url/${item.shorten_url}`).then((res) => {
           this.items = this.items.filter((i) => i.id != item.id);
           this.$notify({
             message: "Url deleted successfully 😃",
@@ -124,6 +170,21 @@ export default {
           });
         });
       }
+    },
+    copyToClipboard(url) {
+      navigator.clipboard.writeText(url);
+    },
+    next() {
+      if (this.items.current_page == this.items.last_page) return;
+      let nextPage = this.items.current_page + 1;
+      this.fetchData(nextPage);
+      this.$router.replace({ query: { page: page } });
+    },
+    prev() {
+      let prevPage = this.items.current_page - 1;
+      if (prevPage == 0) return;
+      this.fetchData(prevPage);
+      this.$router.replace({ query: { page: page } });
     },
   },
 };

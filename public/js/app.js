@@ -2259,7 +2259,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  middleware: "guest",
   data: function data() {
     return {
       form: {
@@ -2272,7 +2271,7 @@ __webpack_require__.r(__webpack_exports__);
     submit: function submit() {
       var _this = this;
 
-      axios.post("/password/send-email", this.form).then(function (res) {
+      axios.post("password/email", this.form).then(function (res) {
         _this.$notify({
           message: res.data.message
         });
@@ -2369,27 +2368,75 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   middleware: "auth",
   data: function data() {
     return {
-      original_url: "",
+      form: {
+        original_url: "",
+        title: ""
+      },
       errors: null,
-      items: []
+      items: {
+        data: []
+      }
     };
   },
   mounted: function mounted() {
-    this.fetchData();
+    this.fetchData(this.$route.query.page);
   },
   methods: {
     submit: function submit() {
       var _this = this;
 
       if (this.original_url == "") return;
-      axios.post("/api/url", {
-        original_url: this.original_url
-      }).then(function (res) {
-        _this.original_url = "";
+      axios.post("/url", this.form).then(function (res) {
+        _this.form.title = "", _this.form.original_url = "";
 
         _this.items.unshift(res.data);
 
@@ -2397,14 +2444,15 @@ __webpack_require__.r(__webpack_exports__);
           message: "Url added successfully 😃"
         });
       })["catch"](function (e) {
-        _this.errors = e.response.data.errors.original_url[0]; //console.log(this.errors);
+        _this.errors = e.response.data.errors.original_url[0];
       });
     },
     fetchData: function fetchData() {
       var _this2 = this;
 
-      axios.get("/api/url").then(function (res) {
-        _this2.items = res.data; //console.log(res.data);
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      axios.get("/url?page=".concat(page)).then(function (res) {
+        _this2.items = res.data;
       })["catch"](function (e) {
         _this2.errors = e.response.data;
       });
@@ -2413,7 +2461,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       if (confirm("Are you sure?")) {
-        axios["delete"]("/api/url/".concat(item.shorten_url)).then(function (res) {
+        axios["delete"]("/url/".concat(item.shorten_url)).then(function (res) {
           _this3.items = _this3.items.filter(function (i) {
             return i.id != item.id;
           });
@@ -2424,6 +2472,29 @@ __webpack_require__.r(__webpack_exports__);
           });
         });
       }
+    },
+    copyToClipboard: function copyToClipboard(url) {
+      navigator.clipboard.writeText(url);
+    },
+    next: function next() {
+      if (this.items.current_page == this.items.last_page) return;
+      var nextPage = this.items.current_page + 1;
+      this.fetchData(nextPage);
+      this.$router.replace({
+        query: {
+          page: page
+        }
+      });
+    },
+    prev: function prev() {
+      var prevPage = this.items.current_page - 1;
+      if (prevPage == 0) return;
+      this.fetchData(prevPage);
+      this.$router.replace({
+        query: {
+          page: page
+        }
+      });
     }
   }
 });
@@ -2696,6 +2767,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   middleware: "guest",
   data: function data() {
@@ -2703,15 +2782,18 @@ __webpack_require__.r(__webpack_exports__);
       form: {
         email: "",
         password: ""
-      }
+      },
+      errors: {}
     };
   },
   methods: {
     submit: function submit() {
+      var _this = this;
+
       axios.post("/login", this.form).then(function (res) {
         window.location = "/";
       })["catch"](function (e) {
-        console.log(e.response);
+        _this.errors = e.response.data.errors;
       });
     }
   }
@@ -3022,6 +3104,312 @@ __webpack_require__.r(__webpack_exports__);
         window.location = "/login";
       })["catch"](function (e) {
         console.log(e.response);
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/reset-password.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/reset-password.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  middleware: "guest",
+  data: function data() {
+    return {
+      form: {
+        email: "",
+        token: "",
+        password: "",
+        password_confirmation: ""
+      }
+    };
+  },
+  mounted: function mounted() {
+    this.form.email = this.$route.query.email;
+    this.form.token = this.$route.params.token;
+  },
+  methods: {
+    submit: function submit() {
+      axios.post("/password/reset", this.form).then(function (res) {
+        window.location = "/";
       });
     }
   }
@@ -45432,7 +45820,7 @@ var render = function() {
       _c(
         "form",
         {
-          staticClass: "flex justify-center w-full",
+          staticClass: "md:w-full flex justify-center w-8/12 flex-wrap",
           on: {
             submit: function($event) {
               $event.preventDefault()
@@ -45441,33 +45829,65 @@ var render = function() {
           }
         },
         [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.original_url,
-                expression: "original_url"
-              }
-            ],
-            staticClass:
-              "appearance-none pr-3 block w-1/3 bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none focus:border-gray-500",
-            attrs: {
-              type: "text",
-              required: "",
-              minlength: "4",
-              placeholder: "Paste your url"
-            },
-            domProps: { value: _vm.original_url },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+          _c("div", { staticClass: "flex w-full justify-center" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.form.title,
+                  expression: "form.title"
                 }
-                _vm.original_url = $event.target.value
+              ],
+              staticClass:
+                "appearance-none pr-3 block w-1/2 bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none focus:border-gray-500",
+              attrs: {
+                type: "text",
+                required: "",
+                minlength: "3",
+                placeholder: "Title"
+              },
+              domProps: { value: _vm.form.title },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.form, "title", $event.target.value)
+                }
               }
-            }
-          }),
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "flex w-full justify-center mt-3" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.form.original_url,
+                  expression: "form.original_url"
+                }
+              ],
+              staticClass:
+                "appearance-none pr-3 block w-1/2 bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none focus:border-gray-500",
+              attrs: {
+                type: "text",
+                required: "",
+                minlength: "4",
+                placeholder: "Paste your url"
+              },
+              domProps: { value: _vm.form.original_url },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.form, "original_url", $event.target.value)
+                }
+              }
+            })
+          ]),
           _vm._v(" "),
           _c(
             "button",
@@ -45494,76 +45914,139 @@ var render = function() {
       : _vm._e(),
     _vm._v(" "),
     _c("section", { staticClass: "mt-5 flex justify-center" }, [
-      _vm.items.length > 0
-        ? _c("div", { staticClass: "border rounded-md p-4" }, [
-            _c("table", [
-              _vm._m(0),
-              _vm._v(" "),
-              _c(
-                "tbody",
-                _vm._l(_vm.items, function(item) {
-                  return _c("tr", { key: item.id }, [
-                    _c("td", { staticClass: "p-2 rounded border text-sm" }, [
-                      _vm._v(
-                        "\n              " +
-                          _vm._s(item.original_url) +
-                          "\n            "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "p-2 rounded border text-sm" }, [
-                      _c(
-                        "a",
-                        { attrs: { href: item.path, target: "_blank" } },
-                        [_vm._v(_vm._s(item.shorten_url))]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "p-2 rounded border text-sm" }, [
-                      _vm._v(_vm._s(item.visits))
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "p-2 rounded border text-sm" }, [
-                      _vm._v(_vm._s(item.created_at))
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "p-2 rounded border text-sm" }, [
-                      _c(
-                        "svg",
-                        {
-                          staticClass:
-                            "svg-inline--fa fa-times fa-w-11 cursor-pointer",
-                          staticStyle: { "max-width": "16px" },
-                          attrs: {
-                            "aria-hidden": "true",
-                            focusable: "false",
-                            "data-prefix": "fas",
-                            "data-icon": "times",
-                            role: "img",
-                            xmlns: "http://www.w3.org/2000/svg",
-                            viewBox: "0 0 352 512"
-                          },
-                          on: {
-                            click: function($event) {
-                              return _vm.destroy(item)
+      _vm.items.data.length > 0
+        ? _c("div", [
+            _c("div", { staticClass: "border rounded-md p-4" }, [
+              _c("table", [
+                _vm._m(0),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.items.data, function(item) {
+                    return _c("tr", { key: item.id }, [
+                      _c("td", { staticClass: "p-2 rounded border text-sm" }, [
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(item.title) +
+                            "\n              "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "p-2 rounded border text-sm" }, [
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(item.original_url) +
+                            "\n              "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "p-2 rounded border text-sm" }, [
+                        _c(
+                          "span",
+                          {
+                            staticClass: "cursor-pointer",
+                            on: {
+                              click: function($event) {
+                                return _vm.copyToClipboard(item.path)
+                              }
                             }
-                          }
-                        },
+                          },
+                          [
+                            _vm._v(
+                              "\n                  " +
+                                _vm._s(item.path) +
+                                "\n                "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          { attrs: { href: item.path, target: "_blank" } },
+                          [
+                            _c("i", {
+                              staticClass: "fa fa-external-link pl-1",
+                              attrs: { "aria-hidden": "true" }
+                            })
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "p-2 rounded border text-sm" }, [
+                        _vm._v(_vm._s(item.visits))
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "p-2 rounded border text-sm" }, [
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(item.created_at) +
+                            "\n              "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        { staticClass: "p-2 rounded border text-sm pl-5" },
                         [
-                          _c("path", {
-                            attrs: {
-                              fill: "#feb2b2",
-                              d:
-                                "M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"
+                          _c("i", {
+                            staticClass:
+                              "fa fa-trash cursor-pointer text-red-600 text-lg",
+                            attrs: { "aria-hidden": "true" },
+                            on: {
+                              click: function($event) {
+                                return _vm.destroy(item)
+                              }
                             }
                           })
                         ]
                       )
                     ])
-                  ])
-                }),
-                0
-              )
+                  }),
+                  0
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "flex w-full justify-between mt-5" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass:
+                      "border rounded shadow-xs w-10 flex justify-center",
+                    class:
+                      _vm.items.current_page == 1
+                        ? "bg-gray-200 text-gray-600 shadow-none cursor-default"
+                        : "",
+                    attrs: { href: "" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.prev($event)
+                      }
+                    }
+                  },
+                  [_vm._v("\n            <<\n          ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass:
+                      "border rounded shadow-xs w-10 flex justify-center",
+                    class:
+                      _vm.items.current_page == _vm.items.last_page
+                        ? "bg-gray-200 text-gray-600 shadow-none cursor-default"
+                        : "",
+                    attrs: { href: "" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.next($event)
+                      }
+                    }
+                  },
+                  [_vm._v("\n            >>\n          ")]
+                )
+              ])
             ])
           ])
         : _vm._e()
@@ -45577,6 +46060,8 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
+        _c("th", [_vm._v("Title")]),
+        _vm._v(" "),
         _c("th", [_vm._v("Original url")]),
         _vm._v(" "),
         _c("th", [_vm._v("Shorten url")]),
@@ -45669,6 +46154,12 @@ var render = function() {
                 })
               ]),
               _vm._v(" "),
+              _vm.errors.email
+                ? _c("span", { staticClass: "text-xs text-red-500" }, [
+                    _vm._v(_vm._s(_vm.errors.email[0]))
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
               _c("div", { staticClass: "flex flex-col pt-4" }, [
                 _c(
                   "label",
@@ -45703,6 +46194,12 @@ var render = function() {
                   }
                 })
               ]),
+              _vm._v(" "),
+              _vm.errors.password
+                ? _c("span", { staticClass: "text-xs text-red-500" }, [
+                    _vm._v(_vm._s(_vm.errors.password[0]))
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               _c("input", {
                 staticClass:
@@ -46417,6 +46914,668 @@ var render = function() {
                     attrs: { to: "/login" }
                   },
                   [_vm._v("\n            Login here.\n          ")]
+                )
+              ],
+              1
+            )
+          ])
+        ]
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "w-1/2 shadow-2xl" }, [
+      _c(
+        "svg",
+        {
+          staticClass: "object-cover w-full h-screen hidden md:block",
+          attrs: {
+            id: "bc52c4b0-5495-47d6-8fbf-e718e11a33f1",
+            "data-name": "Layer 1",
+            xmlns: "http://www.w3.org/2000/svg",
+            width: "803",
+            height: "617",
+            viewBox: "0 0 803 617"
+          }
+        },
+        [
+          _c("title", [_vm._v("mobile login")]),
+          _vm._v(" "),
+          _c("polygon", {
+            attrs: {
+              points:
+                "184.898 427 247.069 329.231 107.835 240.694 35.931 353.769 151.095 427 184.898 427",
+              fill: "#f0f0f0"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d: "M471.5,599h-154V568h154Zm-152-2h150V570h-150Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#3f3d56"
+            }
+          }),
+          _vm._v(" "),
+          _c("circle", {
+            attrs: { cx: "254", cy: "442", r: "10", fill: "#319795" }
+          }),
+          _vm._v(" "),
+          _c("circle", {
+            attrs: { cx: "226", cy: "442", r: "10", fill: "#319795" }
+          }),
+          _vm._v(" "),
+          _c("circle", {
+            attrs: { cx: "198", cy: "442", r: "10", fill: "#319795" }
+          }),
+          _vm._v(" "),
+          _c("circle", {
+            attrs: { cx: "170", cy: "442", r: "10", fill: "#319795" }
+          }),
+          _vm._v(" "),
+          _c("circle", {
+            attrs: { cx: "142", cy: "442", r: "10", fill: "#319795" }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d:
+                "M654.5,254.5v-76h38v-37h-186v186h159V309.31439A25.81441,25.81441,0,0,1,691.31445,283.5H692.5v-29Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#f0f0f0"
+            }
+          }),
+          _vm._v(" "),
+          _c("rect", {
+            attrs: {
+              x: "538",
+              y: "480",
+              width: "124",
+              height: "26",
+              fill: "#319795"
+            }
+          }),
+          _vm._v(" "),
+          _c("rect", {
+            attrs: {
+              x: "507",
+              y: "352",
+              width: "182",
+              height: "24",
+              fill: "#f0f0f0"
+            }
+          }),
+          _vm._v(" "),
+          _c("rect", {
+            attrs: { y: "615", width: "778", height: "2", fill: "#3f3d56" }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d:
+                "M918.68555,758.5H691.31445A26.84532,26.84532,0,0,1,664.5,731.68555V309.31445A26.845,26.845,0,0,1,691.31445,282.5h227.3711A26.845,26.845,0,0,1,945.5,309.31445v422.3711A26.84532,26.84532,0,0,1,918.68555,758.5Zm-227.3711-474A24.84271,24.84271,0,0,0,666.5,309.31445v422.3711A24.84271,24.84271,0,0,0,691.31445,756.5h227.3711A24.84271,24.84271,0,0,0,943.5,731.68555V309.31445A24.84271,24.84271,0,0,0,918.68555,284.5Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#3f3d56"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d:
+                "M778,302.5a6,6,0,1,1,6-6A6.00657,6.00657,0,0,1,778,302.5Zm0-10a4,4,0,1,0,4,4A4.00427,4.00427,0,0,0,778,292.5Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#3f3d56"
+            }
+          }),
+          _vm._v(" "),
+          _c("rect", {
+            attrs: {
+              x: "594.5",
+              y: "154",
+              width: "44",
+              height: "2",
+              fill: "#3f3d56"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d: "M927.5,311.5v80a80.00357,80.00357,0,0,1-80-80Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#319795"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d: "M928.5,731.5h-247v-421h247Zm-245-2h243v-417h-243Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#3f3d56"
+            }
+          }),
+          _vm._v(" "),
+          _c("circle", {
+            attrs: { cx: "671", cy: "218", r: "27", opacity: "0.1" }
+          }),
+          _vm._v(" "),
+          _c("circle", {
+            attrs: { cx: "667", cy: "221", r: "27", fill: "#319795" }
+          }),
+          _vm._v(" "),
+          _c("rect", {
+            attrs: {
+              x: "494",
+              y: "186",
+              width: "38",
+              height: "14",
+              fill: "#3f3d56"
+            }
+          }),
+          _vm._v(" "),
+          _c("rect", {
+            attrs: {
+              x: "515",
+              y: "319",
+              width: "38",
+              height: "14",
+              fill: "#3f3d56"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d: "M897.5,512.5h-184v-26h184Zm-182-2h180v-22h-180Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#3f3d56"
+            }
+          }),
+          _vm._v(" "),
+          _c("rect", {
+            attrs: {
+              x: "507",
+              y: "428",
+              width: "182",
+              height: "24",
+              fill: "#f0f0f0"
+            }
+          }),
+          _vm._v(" "),
+          _c("rect", {
+            attrs: {
+              x: "515",
+              y: "395",
+              width: "38",
+              height: "14",
+              fill: "#3f3d56"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d: "M897.5,588.5h-184v-26h184Zm-182-2h180v-22h-180Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#3f3d56"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d: "M868.5,641.5h-126v-28h126Zm-124-2h122v-24h-122Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#3f3d56"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d:
+                "M892.5,502.5a10.00094,10.00094,0,0,1-17.71,6.37l-.01-.01a9.99931,9.99931,0,1,1,17.43-8.73.00979.00979,0,0,0,.01.01A10.22724,10.22724,0,0,1,892.5,502.5Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#319795"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d:
+                "M892.5,502.5a10.00094,10.00094,0,0,1-17.71,6.37l-.01-.01a10.22763,10.22763,0,0,1-.28-2.36,10.00094,10.00094,0,0,1,17.71-6.37.00979.00979,0,0,0,.01.01A10.22724,10.22724,0,0,1,892.5,502.5Z",
+              transform: "translate(-198.5 -141.5)",
+              opacity: "0.1"
+            }
+          }),
+          _vm._v(" "),
+          _c("circle", {
+            attrs: { cx: "688", cy: "367", r: "10", fill: "#319795" }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d:
+                "M892.5,578.5a10.00094,10.00094,0,0,1-17.71,6.37l-.01-.01a9.99931,9.99931,0,1,1,17.43-8.73.00979.00979,0,0,0,.01.01A10.22724,10.22724,0,0,1,892.5,578.5Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#319795"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d:
+                "M892.5,578.5a10.00094,10.00094,0,0,1-17.71,6.37l-.01-.01a10.22763,10.22763,0,0,1-.28-2.36,10.00094,10.00094,0,0,1,17.71-6.37.00979.00979,0,0,0,.01.01A10.22724,10.22724,0,0,1,892.5,578.5Z",
+              transform: "translate(-198.5 -141.5)",
+              opacity: "0.1"
+            }
+          }),
+          _vm._v(" "),
+          _c("circle", {
+            attrs: { cx: "688", cy: "443", r: "10", fill: "#319795" }
+          }),
+          _vm._v(" "),
+          _c("rect", {
+            attrs: {
+              x: "468",
+              y: "48",
+              width: "52",
+              height: "52",
+              fill: "#f0f0f0"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d:
+                "M869.5,227.5a12,12,0,1,1,12-12A12.01343,12.01343,0,0,1,869.5,227.5Zm0-22a10,10,0,1,0,10,10A10.01146,10.01146,0,0,0,869.5,205.5Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#3f3d56"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d: "M605.5,394.5h-26v-26h26Zm-24-2h22v-22h-22Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#3f3d56"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d: "M1001.5,588.5h-26v-26h26Zm-24-2h22v-22h-22Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#3f3d56"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d:
+                "M488.50263,414.16645l4.4618,2.40312,15.18222,8.18251,24.51011,13.20583,14.2838-26.50149a21.52495,21.52495,0,0,0-8.74393-29.189,28.59037,28.59037,0,0,0-33.38144,4.5292l-.00749.00749a28.62268,28.62268,0,0,0-5.37511,7.07455Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#2f2e41"
+            }
+          }),
+          _vm._v(" "),
+          _c("polygon", {
+            attrs: {
+              points:
+                "356.9 542.937 353.906 575.876 342.676 577.373 335.19 539.942 356.9 542.937",
+              fill: "#ffb8b8"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d:
+                "M538.18164,718.87346s14.22395-7.48629,17.21847-1.49726c0,0-2.24589,17.9671,6.73766,20.213s12.72669,17.96709,0,19.46435-20.96161-2.99451-25.45339-2.99451,0-15.72121,0-15.72121Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#2f2e41"
+            }
+          }),
+          _vm._v(" "),
+          _c("polygon", {
+            attrs: {
+              points:
+                "266.316 542.937 269.311 575.876 280.54 577.373 288.026 539.942 266.316 542.937",
+              fill: "#ffb8b8"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d:
+                "M482.03446,718.87346s-14.224-7.48629-17.21846-1.49726c0,0,2.24588,17.9671-6.73767,20.213s-12.72669,17.96709,0,19.46435S479.04,754.059,483.53172,754.059s0-15.72121,0-15.72121Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#2f2e41"
+            }
+          }),
+          _vm._v(" "),
+          _c("circle", {
+            attrs: {
+              cx: "327.70358",
+              cy: "259.20612",
+              r: "19.46436",
+              fill: "#ffb8b8"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d:
+                "M464.06737,438.8862,479.78858,463.591l18.71572-1.49726,30.69379,2.24589s2.89719-5.79438,5.26289-11.43158a44.28506,44.28506,0,0,0,2.972-8.78141c.74863-5.2404-9.73218-10.4808-9.73218-10.4808s-.41178-.07489-1.10046-.23957c-.9133-.21709-2.32082-.57646-3.86295-1.10051-3.48114-1.1828-7.666-3.18912-8.51191-6.14621-1.49726-5.24041,9.73218-12.7267,9.73218-12.7267l-13.47532-12.72669s-11.97057,16.627-26.50889,20.41508a23.155,23.155,0,0,1-2.56044.524c-.04487.00749-.08224.015-.12721.02248C465.56462,423.91362,464.06737,438.8862,464.06737,438.8862Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#ffb8b8"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d:
+                "M472.30229,432.14854l-8.23492,6.73766s-6.73767,32.19105-4.49178,41.1746-.74863,17.21846-.74863,18.71572S452.0893,556.421,452.0893,556.421s-13.47532,29.94516.74863,26.95064,8.98355-32.93967,8.98355-32.93967l17.21847-52.404V453.85878Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#ffb8b8"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d:
+                "M531.444,438.13757l5.989,4.49177,2.99452,62.88484,22.45887,53.90129s16.46984,26.202,5.989,26.95065S551.657,559.41547,551.657,559.41547l-20.213-51.6554-2.99452-50.15814Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#ffb8b8"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d:
+                "M494.01253,442.62934s14.97258,10.48081,38.92871,6.73767c0,0,6.73766,13.47532,2.99451,20.96161s4.49178,25.45339,5.989,27.69927,18.71572,48.66089,24.70475,98.819,22.45888,84.59508,8.23492,89.08685-43.42048,9.73218-46.415,5.24041-7.48629-116.03751-7.48629-116.03751l-8.23492,42.67186s11.22944,72.617,2.99452,74.11427-59.89032-2.99451-58.39307-11.97806,16.46984-56.14718,16.46984-56.14718-.74863-94.32726,14.224-112.29435c0,0,5.989-9.73218-2.24589-22.45888s-7.48629-32.93967-7.48629-32.93967S484.28035,456.10467,494.01253,442.62934Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#2f2e41"
+            }
+          }),
+          _vm._v(" "),
+          _c("polygon", {
+            attrs: {
+              points:
+                "282.913 280.145 295.513 307.867 298.507 306.37 285.473 279.621 282.913 280.145",
+              fill: "#2f2e41"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d:
+                "M522.73742,432.30572l9.45519,20.80443,2.26837-.20214-.77111-3.541-7.0895-15.96078C525.68707,433.18914,524.27955,432.82977,522.73742,432.30572Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#2f2e41"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d:
+                "M492.96443,416.56957a12.323,12.323,0,0,0,22.60865,2.201c-9.47017-12.38235-1.34757-20.16057,14.0368-26.04483a12.31224,12.31224,0,0,0-1.32509-13.655,28.687,28.687,0,0,0-23.4696,7.72586l-.00749.00749L493.87783,407.077A12.26371,12.26371,0,0,0,492.96443,416.56957Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#2f2e41"
+            }
+          }),
+          _vm._v(" "),
+          _c("ellipse", {
+            attrs: {
+              cx: "316.09983",
+              cy: "261.45201",
+              rx: "2.6202",
+              ry: "4.49177",
+              fill: "#ffb8b8"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d:
+                "M522.408,395.6229l22.50383,10.19632,4.125-9.10331a21.56313,21.56313,0,0,0-4.34208-9.08087l-15.48909-7.01465Z",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#2f2e41"
+            }
+          }),
+          _vm._v(" "),
+          _c("circle", {
+            attrs: { cx: "378", cy: "445", r: "10", fill: "#319795" }
+          }),
+          _vm._v(" "),
+          _c("circle", {
+            attrs: {
+              cx: "56.95651",
+              cy: "507.91124",
+              r: "6.53537",
+              fill: "#ff6584"
+            }
+          }),
+          _vm._v(" "),
+          _c("rect", {
+            attrs: {
+              x: "87.9751",
+              y: "541.97266",
+              width: "2",
+              height: "74.41113",
+              fill: "#3f3d56"
+            }
+          }),
+          _vm._v(" "),
+          _c("circle", {
+            attrs: {
+              cx: "88.97529",
+              cy: "541.97239",
+              r: "10.52282",
+              fill: "#3f3d56"
+            }
+          }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              d: "M287.47529,729.33366s-1.50326-32.33193-32.32009-28.57378",
+              transform: "translate(-198.5 -141.5)",
+              fill: "#3f3d56"
+            }
+          })
+        ]
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/reset-password.vue?vue&type=template&id=54d82a82&":
+/*!************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/reset-password.vue?vue&type=template&id=54d82a82& ***!
+  \************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "w-full flex flex-wrap" }, [
+    _c("div", { staticClass: "w-full md:w-1/2 flex flex-col" }, [
+      _c(
+        "div",
+        {
+          staticClass:
+            "flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32"
+        },
+        [
+          _c("p", { staticClass: "text-center text-3xl" }, [
+            _vm._v("Reset password")
+          ]),
+          _vm._v(" "),
+          _c(
+            "form",
+            {
+              staticClass: "flex flex-col pt-3 md:pt-8",
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.submit($event)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "flex flex-col pt-4" }, [
+                _c(
+                  "label",
+                  { staticClass: "text-lg", attrs: { for: "email" } },
+                  [_vm._v("Email")]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.email,
+                      expression: "form.email"
+                    }
+                  ],
+                  staticClass:
+                    "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline",
+                  attrs: {
+                    type: "email",
+                    id: "email",
+                    placeholder: "Your email"
+                  },
+                  domProps: { value: _vm.form.email },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "email", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "flex flex-col pt-4" }, [
+                _c(
+                  "label",
+                  { staticClass: "text-lg", attrs: { for: "password" } },
+                  [_vm._v("Password")]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.password,
+                      expression: "form.password"
+                    }
+                  ],
+                  staticClass:
+                    "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline",
+                  attrs: {
+                    type: "password",
+                    id: "password",
+                    placeholder: "Your new password"
+                  },
+                  domProps: { value: _vm.form.password },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "password", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "flex flex-col pt-4" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "text-lg",
+                    attrs: { for: "password_confirmation" }
+                  },
+                  [_vm._v("Confirm password")]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.password_confirmation,
+                      expression: "form.password_confirmation"
+                    }
+                  ],
+                  staticClass:
+                    "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline",
+                  attrs: {
+                    type: "password",
+                    id: "password_confirmation",
+                    placeholder: "Confirm your new password"
+                  },
+                  domProps: { value: _vm.form.password_confirmation },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.form,
+                        "password_confirmation",
+                        $event.target.value
+                      )
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass:
+                  "bg-teal-600 text-white font-bold text-lg hover:bg-teal-800 p-2 mt-8 cursor-pointer",
+                attrs: { type: "submit", value: "Reset password" }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "text-center pt-12 pb-12" }, [
+            _c(
+              "p",
+              [
+                _vm._v("\n          Don't have an account?\n          "),
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "underline font-semibold",
+                    attrs: { to: "/register" }
+                  },
+                  [_vm._v("\n            Register here.\n          ")]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "p",
+              { staticClass: "pt-3" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "underline font-semibold",
+                    attrs: { to: "/forgot-password" }
+                  },
+                  [_vm._v("\n            Forgot password?\n          ")]
                 )
               ],
               1
@@ -62670,6 +63829,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/pages/reset-password.vue":
+/*!***********************************************!*\
+  !*** ./resources/js/pages/reset-password.vue ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _reset_password_vue_vue_type_template_id_54d82a82___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./reset-password.vue?vue&type=template&id=54d82a82& */ "./resources/js/pages/reset-password.vue?vue&type=template&id=54d82a82&");
+/* harmony import */ var _reset_password_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./reset-password.vue?vue&type=script&lang=js& */ "./resources/js/pages/reset-password.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _reset_password_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _reset_password_vue_vue_type_template_id_54d82a82___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _reset_password_vue_vue_type_template_id_54d82a82___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/pages/reset-password.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/pages/reset-password.vue?vue&type=script&lang=js&":
+/*!************************************************************************!*\
+  !*** ./resources/js/pages/reset-password.vue?vue&type=script&lang=js& ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_reset_password_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./reset-password.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/reset-password.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_reset_password_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/pages/reset-password.vue?vue&type=template&id=54d82a82&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/pages/reset-password.vue?vue&type=template&id=54d82a82& ***!
+  \******************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_reset_password_vue_vue_type_template_id_54d82a82___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./reset-password.vue?vue&type=template&id=54d82a82& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/reset-password.vue?vue&type=template&id=54d82a82&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_reset_password_vue_vue_type_template_id_54d82a82___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_reset_password_vue_vue_type_template_id_54d82a82___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/router.js":
 /*!********************************!*\
   !*** ./resources/js/router.js ***!
@@ -62686,6 +63914,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_login__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pages/login */ "./resources/js/pages/login.vue");
 /* harmony import */ var _pages_register__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pages/register */ "./resources/js/pages/register.vue");
 /* harmony import */ var _pages_forgot_password__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pages/forgot-password */ "./resources/js/pages/forgot-password.vue");
+/* harmony import */ var _pages_reset_password__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pages/reset-password */ "./resources/js/pages/reset-password.vue");
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
@@ -62693,18 +63922,22 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
 
 
 
+
 var routes = [{
-  path: '/',
+  path: "/",
   component: _pages_index__WEBPACK_IMPORTED_MODULE_2__["default"]
 }, {
-  path: '/login',
+  path: "/login",
   component: _pages_login__WEBPACK_IMPORTED_MODULE_3__["default"]
 }, {
-  path: '/register',
+  path: "/register",
   component: _pages_register__WEBPACK_IMPORTED_MODULE_4__["default"]
 }, {
-  path: '/forgot-password',
+  path: "/forgot-password",
   component: _pages_forgot_password__WEBPACK_IMPORTED_MODULE_5__["default"]
+}, {
+  path: "/password/reset/:token",
+  component: _pages_reset_password__WEBPACK_IMPORTED_MODULE_6__["default"]
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   routes: routes,
@@ -62714,14 +63947,14 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
 router.beforeEach(function (to, from, next) {
   var middleware = to.matched[0].components["default"].middleware;
 
-  if (middleware == 'guest') {
+  if (middleware == "guest") {
     if (window.loggedIn) {
       next("/");
       return;
     }
   }
 
-  if (middleware == 'auth') {
+  if (middleware == "auth") {
     if (!window.loggedIn) {
       next("/login");
       return;

@@ -18,6 +18,10 @@
             />
           </div>
 
+          <span class="text-xs text-red-500" v-if="errors.email">{{
+            errors.email[0]
+          }}</span>
+
           <div class="flex flex-col pt-4">
             <label for="password" class="text-lg">Password</label>
             <input
@@ -28,6 +32,10 @@
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
+
+          <span class="text-xs text-red-500" v-if="errors.password">{{
+            errors.password[0]
+          }}</span>
 
           <input
             type="submit"
@@ -264,6 +272,7 @@ export default {
         email: "",
         password: "",
       },
+      errors: {},
     };
   },
   methods: {
@@ -274,12 +283,11 @@ export default {
           window.location = "/";
         })
         .catch((e) => {
-          console.log(e.response);
+          this.errors = e.response.data.errors;
         });
     },
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>

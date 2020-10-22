@@ -251,7 +251,6 @@
 
 <script>
 export default {
-  middleware: "guest",
   data() {
     return {
       form: {
@@ -263,7 +262,7 @@ export default {
   methods: {
     submit() {
       axios
-        .post("/password/send-email", this.form)
+        .post("password/email", this.form)
         .then((res) => {
           this.$notify({ message: res.data.message });
         })
