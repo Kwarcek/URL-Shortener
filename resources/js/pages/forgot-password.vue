@@ -253,9 +253,7 @@
 export default {
   data() {
     return {
-      form: {
-        email: "",
-      },
+      form: { email: "" },
       errors: {},
     };
   },
@@ -266,9 +264,7 @@ export default {
         .then((res) => {
           this.$notify({ message: res.data.message });
         })
-        .catch((e) => {
-          this.errors = e.response.data.errors;
-        });
+        .catch((e) => (this.errors = e.response.data.errors));
     },
   },
 };

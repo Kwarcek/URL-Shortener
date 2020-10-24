@@ -16,7 +16,7 @@ class UrlController extends Controller
      */
     public function index()
     {
-        return auth()->user()->urls()->paginate(10);
+        return auth()->user()->urls()->paginate(4);
     }
 
     /**
@@ -41,18 +41,6 @@ class UrlController extends Controller
     {
         $url->increment('visits');
         return redirect($url->original_url);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Url  $url
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Url $url)
-    {
-        //
     }
 
     /**

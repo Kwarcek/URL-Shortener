@@ -1,28 +1,21 @@
 <template>
-  <div class="">
+  <div>
     <bridge-notify />
     <app-header />
     <div class="min-h-screen">
       <router-view></router-view>
-      <!--<Index -->
     </div>
     <app-footer />
   </div>
 </template>
 
 <script>
-import AppHeader from "./components/layouts/Header";
-import AppFooter from "./components/layouts/Footer";
-//import Index from "./pages/index";
+import AppHeader from "./components/Layouts/Header";
+import AppFooter from "./components/Layouts/Footer";
 
 export default {
-  components: {
-    AppHeader,
-    AppFooter,
-    //Index,
-  },
+  components: { AppHeader, AppFooter },
 };
 </script>
 
-<style>
-</style>
+<style></style>

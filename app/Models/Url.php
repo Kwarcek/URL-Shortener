@@ -8,10 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Url extends Model
 {
+    /**
+     * Database fillable fields
+     *
+     * @var array
+     */
     protected $fillable = [
-        'original_url', 'shorten_url', 'user_id', 'title'
+        'original_url',
+        'shorten_url',
+        'user_id',
+        'title'
     ];
 
+    /**
+     * Append to query path data
+     *
+     * @var array
+     */
     protected $appends = ['path'];
 
     /**

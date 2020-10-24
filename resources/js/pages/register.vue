@@ -292,15 +292,12 @@ export default {
       axios
         .post("/register", this.form)
         .then((res) => {
-          window.location = "/login";
+          window.location = "/";
         })
-        .catch((e) => {
-          console.log(e.response);
-        });
+        .catch((e) => console.log(e.response));
     },
   },
 };
 </script>
-
 <style>
 </style>
