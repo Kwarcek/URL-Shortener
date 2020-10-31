@@ -81,6 +81,7 @@
 import MainSvg from "../components/index/MainSvg.vue";
 
 export default {
+  components: { MainSvg },
   middleware: "guest",
   data() {
     return {

@@ -2773,6 +2773,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    MainSvg: _components_index_MainSvg_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   middleware: "guest",
   data: function data() {
     return {
@@ -2889,6 +2892,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    MainSvg: _components_index_MainSvg_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   middleware: "guest",
   data: function data() {
     return {
