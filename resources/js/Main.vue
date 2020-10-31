@@ -4,6 +4,7 @@
     <app-header />
     <div class="min-h-screen">
       <router-view></router-view>
+      <!-- <Index /> -->
     </div>
     <app-footer />
   </div>
